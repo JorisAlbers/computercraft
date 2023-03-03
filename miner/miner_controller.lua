@@ -132,10 +132,10 @@ function move_to_y(to_y)
     allow_y_movement()
     if y > to_y then
         -- we need to go down
-        rotate_forwards()
+        rotate_backwards()
     else
         -- we need to go up
-        rotate_backwards()
+        rotate_forwards()
     end
 
     start_moving()
@@ -150,10 +150,10 @@ function move_to_x(to_x)
     allow_x_movement()
     if x > to_x then
         -- we need to go down
-        rotate_forwards()
+        rotate_backwards()
     else
         -- we need to go up
-        rotate_backwards()
+        rotate_forwards()
     end
 
     start_moving()
