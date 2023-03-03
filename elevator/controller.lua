@@ -56,7 +56,7 @@ function main()
 		if event == "rednet_message" then
 			local message_type, message_content = read_message(a2)
 			print("type: ".. message_type .. " content: " .. message_content)
-			parse_message(message_type,message_content)
+			parse_rednet_message(message_type,message_content)
 		elseif event == "timer" then
 			if a1 == calibration_timer_id then
 				if sm.get("level") == -1 then
@@ -87,7 +87,7 @@ function read_message(message)
 	return message_type, messsage_content
 end
 
-function parse_message(message_type,message_content)
+function parse_rednet_message(message_type,message_content)
 	if message_type == "at_level" then
 		sm.set("level",tonumber(message_content))
 		move_to_level(sm.get("target_level"))		
