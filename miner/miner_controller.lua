@@ -56,7 +56,7 @@ function initialize()
     stop_moving_along_x_axis()
     rotate_backwards()
     
-    if redstone.getInput("redstone_hallsensor_side") then
+    if redstone.getInput(sm.get("redstone_hallsensor_side")) then
         x = 0
     end
 end
