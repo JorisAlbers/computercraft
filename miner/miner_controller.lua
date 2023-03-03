@@ -28,7 +28,7 @@ function main()
         
         if event == "char" then
             char_buffer  = char_buffer..a1
-            term.write(char_buffer)
+            term.write(a1)
         end
 
 		if event == "redstone" then
