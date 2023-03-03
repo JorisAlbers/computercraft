@@ -4,7 +4,6 @@ shell.run("pastebin","get","XcqAQVWu","settings_manager.lua")
 require "settings_manager"
 
 sm = newSettingsManager("settings.txt")
-sm.set("modem_side","right")
 sm.set("redstone_hallsensor_side","bottom")
 sm.set("redstone_lock_x_movement_side","right")
 sm.set("redstone_lock_x_movement_active_when",false)
@@ -26,8 +25,7 @@ local isMovingForwards = true;
 
 function main()
 	print("Starting miner controller for x axis")	
-	rednet.open(sm.get("modem_side"))
-
+    peripheral.find("modem", rednet.open)
     initialize()
 	
 	draw_ui()
