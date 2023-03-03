@@ -121,7 +121,7 @@ function move_to_y(to_y)
     stop_moving()
     disallow_x_movement()
     allow_y_movement()
-    if z > to_y then
+    if y > to_y then
         -- we need to go down
         rotate_forwards()
     else
@@ -139,7 +139,7 @@ function move_to_x(to_x)
     stop_moving()
     disallow_y_movement()
     allow_x_movement()
-    if z > to_x then
+    if x > to_x then
         -- we need to go down
         rotate_forwards()
     else
