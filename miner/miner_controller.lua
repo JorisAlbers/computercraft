@@ -126,7 +126,7 @@ function move_to_y(to_y)
         rotate_forwards()
     else
         -- we need to go up
-        rotate_forwards()
+        rotate_backwards()
     end
 
     start_moving()
@@ -143,7 +143,7 @@ function move_to_x(to_x)
         rotate_forwards()
     else
         -- we need to go up
-        rotate_forwards()
+        rotate_backwards()
     end
 
     start_moving()
@@ -159,7 +159,7 @@ function move_to_z(to_z)
         rotate_forwards()
     else
         -- we need to go up
-        rotate_forwards()
+        rotate_backwards()
     end
     start_moving()
     -- todo actually know where we are on the z axis
