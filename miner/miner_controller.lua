@@ -60,8 +60,6 @@ end
 function initialize()
     print("initalizing")
     stop_moving()
-    disallow_y_movement()
-    rotate_backwards()
 
     print("waiting till other controllers connect...")
     while not y_controller_connected do        
@@ -74,7 +72,6 @@ function initialize()
         end
     end
 
-    stop_moving_along_y_axis()
     
     if redstone.getInput(sm.get("redstone_hallsensor_side")) then
         x = 0
@@ -124,7 +121,16 @@ function move_to_y(to_y)
     stop_moving()
     disallow_x_movement()
     allow_y_movement()
-    -- todo: start_moving()
+    if z > to_y then
+        -- we need to go down
+        rotate_forwards()
+    else
+        -- we need to go up
+        rotate_forwards()
+    end
+
+    start_moving()
+    -- todo: keep track of y
 end
 
 function move_to_x(to_x)
@@ -132,7 +138,16 @@ function move_to_x(to_x)
     stop_moving()
     disallow_y_movement()
     allow_x_movement()
-        -- todo: start_moving()
+    if z > to_x then
+        -- we need to go down
+        rotate_forwards()
+    else
+        -- we need to go up
+        rotate_forwards()
+    end
+
+    start_moving()
+    -- todo: keep track of x
 end
 
 function move_to_z(to_z)
