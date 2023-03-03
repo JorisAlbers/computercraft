@@ -21,14 +21,14 @@ function main()
 	while true do
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
-        if event == "key_up" and keys.getName(a1) == "enter" then
-            term.write(char_buffer)
-            char_buffer = "";
+        if event == "key_up" and keys.getName(a1) == "enter" then           
+            char_buffer = ""
+            print()
         end
         
         if event == "char" then
             char_buffer  = char_buffer..a1
-            print()
+            term.write(char_buffer)
         end
 
 		if event == "redstone" then
