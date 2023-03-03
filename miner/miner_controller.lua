@@ -153,7 +153,7 @@ end
 
 function read_message(message)
     local split = split(message,";")
-    return split[1], split[0]
+    return split[1], split[2]
 end
 
 function parse_bool(text)
