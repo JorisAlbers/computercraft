@@ -156,10 +156,10 @@ function move_to_z(to_z)
 
     if z > to_z then
         -- we need to go down
-        rotate_forwards()
+        rotate_backwards()
     else
         -- we need to go up
-        rotate_backwards()
+        rotate_forwards()
     end
     start_moving()
     -- todo actually know where we are on the z axis
