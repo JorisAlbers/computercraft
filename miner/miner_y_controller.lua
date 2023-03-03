@@ -4,9 +4,9 @@ shell.run("pastebin","get","XcqAQVWu","settings_manager.lua")
 require "settings_manager"
 
 sm = newSettingsManager("settings.txt")
-sm.set("modem_side","back")
-sm.set("redstone_hallsensor_side","left")
-sm.set("redstone_lock_movement_side","right")
+sm.set("modem_side","right")
+sm.set("redstone_hallsensor_side","front")
+sm.set("redstone_lock_movement_side","top")
 
 sm.load()
 
