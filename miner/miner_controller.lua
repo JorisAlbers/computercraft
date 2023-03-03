@@ -154,7 +154,7 @@ end
 function read_message(message)
     local split = split(message,";")
     if not split[2] then
-         split = ""
+         split[2] = ""
     end
     return split[1], split[2]
 end
