@@ -7,7 +7,7 @@ sm = newSettingsManager("settings.txt")
 sm.set("modem_side","right")
 sm.set("redstone_hallsensor_side","front")
 sm.set("redstone_lock_movement_side","top")
-
+sm.set("controller_id",18)
 sm.load()
 
 function main()
@@ -34,7 +34,9 @@ end
 
 function parse_rednet_message(message_type,message_content)
     if message_type == "lock_movement" then
-        redstone.setOutput(sm.get("redstone_lock_movement_side", parse_bool(message_content)))        
+        redstone.setOutput(sm.get("redstone_lock_movement_side", parse_bool(message_content)))      
+    elseif message_type == "init" then
+        rednet.send(sm.get("controller_id"),"init;hello")
     end
 end
 
