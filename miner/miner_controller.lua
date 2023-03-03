@@ -22,11 +22,13 @@ function main()
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
         if event == "key_up" and keys.getName(a1) == "enter" then
-            print(char_buffer)
+            term.write(char_buffer)
+            char_buffer = "";
         end
         
         if event == "char" then
             char_buffer  = char_buffer..a1
+            print()
         end
 
 		if event == "redstone" then
