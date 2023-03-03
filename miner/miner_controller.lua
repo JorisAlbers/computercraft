@@ -10,13 +10,17 @@ sm.set("redstone_lock_movement_side","top")
 sm.set("redstone_lock_movement_active_when",true)
 sm.set("redstone_direction_side","left")
 sm.set("redstone_direction_forwards_when",true)
+sm.set("y_controller_id",19)
+
 
 sm.load()
 
+local y_controller_connected = false;
 local char_buffer = ""
 local y = 0
 local x = 0
 local isMovingForwards = true;
+
 
 function main()
 	print("Starting miner controller for x axis")	
@@ -53,8 +57,22 @@ function main()
 end
 
 function initialize()
+    print("initalizing")
     stop_moving_along_x_axis()
     rotate_backwards()
+
+    print("waiting till other controllers connect...")
+    while not y_controller_connected do        
+        rednet.send(sm.get("y_controller_id"),"init;request")
+        local event, a1, a2, a3, a4, a5 = os.pullEvent()
+        if event == "rednet_message" then
+			local message_type, message_content = read_message(a2)
+			print("type: ".. message_type .. " content: " .. message_content)
+			parse_rednet_message(message_type,message_content, a1)
+        end
+    end
+
+    stop_moving_along_y_axis()
     
     if redstone.getInput(sm.get("redstone_hallsensor_side")) then
         x = 0
@@ -67,8 +85,12 @@ function draw_ui()
     print("x:<number> = move to x position <number>")
 end
 
-function parse_rednet_message(message_type,message_content)
-    if message_type == "at_y" then
+function parse_rednet_message(message_type,message_content, sender_id)
+    if message_type == "request" then
+        if sender_id == sm.get("y_controller_id") then
+            y_controller_connected = true
+        end
+    elseif message_type == "at_y" then
         local y = tonumber(message_content)
         -- todo do stuff
     end
@@ -95,6 +117,8 @@ end
 
 function move_to_x(x)
     print("moving to x: "..x)
+    stop_moving_along_y_axis()
+    start_moving_along_x_axis()
 end
 
 function return_to_start()
@@ -117,6 +141,14 @@ end
 
 function stop_moving_along_x_axis()
     redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
+end
+
+function start_moving_along_y_axis()
+    rednet.send(sm.get("y_controller_id"),"movement;start")
+end
+
+function stop_moving_along_y_axis()
+    rednet.send(sm.get("y_controller_id"),"movement;stop")
 end
 
 function read_message(message)
