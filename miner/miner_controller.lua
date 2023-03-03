@@ -130,6 +130,7 @@ function move_to_y(to_y)
     end
 
     start_moving()
+    y = to_y
     -- todo: keep track of y
 end
 
@@ -147,6 +148,7 @@ function move_to_x(to_x)
     end
 
     start_moving()
+    x = to_x
     -- todo: keep track of x
 end
 
