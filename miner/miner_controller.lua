@@ -23,11 +23,9 @@ function main()
 		
         if event == "key_up" and keys.getName(a1) == "enter" then           
             print()
-            print("key received")
             parse_console_message(char_buffer)
             char_buffer = ""
         elseif event == "char" then
-            print("char received")
             char_buffer  = char_buffer..a1
             term.write(a1)
         end
