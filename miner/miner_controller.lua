@@ -9,7 +9,7 @@ sm.set("redstone_hallsensor_side","bottom")
 sm.set("redstone_lock_movement_side","top")
 sm.set("redstone_lock_movement_active_when",true)
 sm.set("redstone_direction_side","left")
-sm.set("redstone_direction_forwards_when",true)
+sm.set("redstone_direction_forwards_when",false)
 sm.set("y_controller_id",19)
 
 
