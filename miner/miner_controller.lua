@@ -20,6 +20,7 @@ local y_controller_connected = false;
 local char_buffer = ""
 local y = 0
 local x = 0
+local z = 0
 local isMovingForwards = true;
 
 
@@ -59,7 +60,7 @@ end
 function initialize()
     print("initalizing")
     stop_moving()
-    stop_moving_along_x_axis()
+    disallow_y_movement()
     rotate_backwards()
 
     print("waiting till other controllers connect...")
@@ -94,7 +95,7 @@ function parse_rednet_message(message_type,message_content, sender_id)
             y_controller_connected = true
         end
     elseif message_type == "at_y" then
-        local y = tonumber(message_content)
+        y = math.floor(tonumber(message_content))
         -- todo do stuff
     end
 end
@@ -103,9 +104,9 @@ function parse_console_message(message)
     if message == "r" or message == "R" then
         return_to_start()
     elseif message == "start" then 
-        start_moving_along_z_axis()
+        move_to_z(9)        
     elseif message == "stop" then
-        stop_moving_along_z_axis()
+        move_to_z(0) 
     else
         local split = split(message,":")
         if #split == 2 then
@@ -118,14 +119,36 @@ function parse_console_message(message)
     end
 end
 
-function move_to_y(y)
-    print("moving to y: "..y)
+function move_to_y(to_y)
+    print("moving to y: "..to_y)
+    stop_moving()
+    disallow_x_movement()
+    allow_y_movement()
+    -- todo: start_moving()
 end
 
-function move_to_x(x)
-    print("moving to x: "..x)
-    stop_moving_along_y_axis()
-    start_moving_along_x_axis()
+function move_to_x(to_x)
+    print("moving to x: "..to_x)
+    stop_moving()
+    disallow_y_movement()
+    allow_x_movement()
+        -- todo: start_moving()
+end
+
+function move_to_z(to_z)
+    stop_moving()
+    allow_z_movement()
+
+    if z > to_z then
+        -- we need to go down
+        rotate_forwards()
+    else
+        -- we need to go up
+        rotate_forwards()
+    end
+    start_moving()
+    -- todo actually know where we are on the z axis
+    z = to_z 
 end
 
 function return_to_start()
@@ -142,31 +165,29 @@ function rotate_backwards()
     redstone.setOutput(sm.get("redstone_direction_side"),not sm.get("redstone_direction_forwards_when"))
 end
 
-function start_moving_along_x_axis()
+function allow_x_movement()
     redstone.setOutput(sm.get("redstone_lock_x_movement_side"), not sm.get("redstone_lock_x_movement_active_when"))
 end
 
-function stop_moving_along_x_axis()
+function disallow_x_movement()
     redstone.setOutput(sm.get("redstone_lock_x_movement_side"),  sm.get("redstone_lock_x_movement_active_when"))
 end
 
-function start_moving_along_y_axis()
+function allow_y_movement()
     rednet.send(sm.get("y_controller_id"),"movement;start")
 end
 
-function stop_moving_along_y_axis()
+function disallow_y_movement()
     rednet.send(sm.get("y_controller_id"),"movement;stop")
 end
 
-function start_moving_along_z_axis()
-    stop_moving_along_x_axis()
-    stop_moving_along_y_axis()
-    start_moving()
+function allow_z_movement()
+    disallow_y_movement()
+    disallow_x_movement()
 end
 
-function stop_moving_along_z_axis()
-    start_moving_along_x_axis()
-    stop_moving()
+function disallow_z_movement()
+    -- this is based on allowing x or y. do nothing.
 end
 
 function start_moving()
