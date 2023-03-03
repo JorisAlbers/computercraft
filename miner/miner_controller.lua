@@ -51,7 +51,7 @@ function main()
         if event == "rednet_message" then
 			local message_type, message_content = read_message(a2)
 			print("type: ".. message_type .. " content: " .. message_content)
-			parse_rednet_message(message_type,message_content)
+			parse_rednet_message(message_type,message_content,a1)
         end
 	end	
 end
