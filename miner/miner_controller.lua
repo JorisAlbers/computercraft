@@ -60,6 +60,9 @@ end
 function initialize()
     print("initalizing")
     stop_moving()
+    disallow_x_movement()
+    disallow_y_movement()
+    disallow_z_movement()
 
     print("waiting till other controllers connect...")
     while not y_controller_connected do        
@@ -108,9 +111,15 @@ function parse_console_message(message)
         local split = split(message,":")
         if #split == 2 then
             if split[1] == "y" then
-                move_to_y(tonumber(split[2]))
+                local number = tonumber(split[2])
+                if number then                        
+                    move_to_y(number)
+                end
             elseif split[2] == "x" then
-                move_to_x(tonumber(split[2]))
+                local number = tonumber(split[2])
+                if number then                        
+                    move_to_x(number)
+                end
             end
         end
     end
