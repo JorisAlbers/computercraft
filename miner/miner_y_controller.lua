@@ -14,7 +14,6 @@ function main()
 	print("Starting miner controller for y axis")	
 	peripheral.find("modem", rednet.open)
 	
-	draw_ui()
 	while true do
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
