@@ -6,10 +6,12 @@ require "settings_manager"
 sm = newSettingsManager("settings.txt")
 sm.set("modem_side","right")
 sm.set("redstone_hallsensor_side","bottom")
-sm.set("redstone_lock_movement_side","top")
-sm.set("redstone_lock_movement_active_when",true)
+sm.set("redstone_lock_x_movement_side","right")
+sm.set("redstone_lock_x_movement_active_when",false)
 sm.set("redstone_direction_side","left")
 sm.set("redstone_direction_forwards_when",false)
+sm.set("redstone_stop_movement_side","top")
+sm.set("redstone_stop_movement_active_when",false)
 sm.set("y_controller_id",19)
 
 
@@ -58,6 +60,7 @@ end
 
 function initialize()
     print("initalizing")
+    stop_moving()
     stop_moving_along_x_axis()
     rotate_backwards()
 
@@ -136,11 +139,11 @@ function rotate_backwards()
 end
 
 function start_moving_along_x_axis()
-    redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
+    redstone.setOutput(sm.get("redstone_lock_x_movement_side"), not sm.get("redstone_lock_x_movement_active_when"))
 end
 
 function stop_moving_along_x_axis()
-    redstone.setOutput(sm.get("redstone_lock_movement_side"),  sm.get("redstone_lock_movement_active_when"))
+    redstone.setOutput(sm.get("redstone_lock_x_movement_side"),  sm.get("redstone_lock_x_movement_active_when"))
 end
 
 function start_moving_along_y_axis()
@@ -149,6 +152,25 @@ end
 
 function stop_moving_along_y_axis()
     rednet.send(sm.get("y_controller_id"),"movement;stop")
+end
+
+function start_moving_along_z_axis()
+    stop_moving_along_x_axis()
+    stop_moving_along_y_axis()
+    start_moving()
+end
+
+function stop_moving_along_z_axis()
+    start_moving_along_x_axis()
+    stop_moving()
+end
+
+function start_moving()
+    redstone.setOutput(sm.get("redstone_stop_movement_side"),  sm.get("redstone_stop_movement_active_when"))
+end
+
+function stop_moving()
+    redstone.setOutput(sm.get("redstone_stop_movement_side"),  not sm.get("redstone_stop_movement_active_when"))
 end
 
 function read_message(message)
