@@ -12,7 +12,7 @@ sm.load()
 
 function main()
 	print("Starting miner controller for y axis")	
-	rednet.open(sm.get("modem_side"))
+	peripheral.find("modem", rednet.open)
 	
 	draw_ui()
 	while true do
