@@ -86,7 +86,7 @@ function draw_ui()
 end
 
 function parse_rednet_message(message_type,message_content, sender_id)
-    if message_type == "request" then
+    if message_type == "init" then
         if sender_id == sm.get("y_controller_id") then
             y_controller_connected = true
         end
