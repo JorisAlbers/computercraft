@@ -59,12 +59,12 @@ end
 
 function start_moving_along_axis()
     print("starting to move")
-    redstone.setOutput(sm.get("redstone_lock_movement_side"),sm.get("redstone_lock_movement_active_when"))
+    redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
 end
 
 function stop_moving_along_axis()
     print("stop movement")
-    redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
+    redstone.setOutput(sm.get("redstone_lock_movement_side"), sm.get("redstone_lock_movement_active_when"))
 end
 
 function parse_bool(text)
