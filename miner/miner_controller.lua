@@ -7,15 +7,22 @@ sm = newSettingsManager("settings.txt")
 sm.set("modem_side","right")
 sm.set("redstone_hallsensor_side","bottom")
 sm.set("redstone_lock_movement_side","top")
+sm.set("redstone_lock_movement_active_when",true)
 sm.set("redstone_direction_side","left")
+sm.set("redstone_direction_forwards_when",true)
 
 sm.load()
 
 local char_buffer = ""
+local y = 0
+local x = 0
+local isMovingForwards = true;
 
 function main()
 	print("Starting miner controller for x axis")	
 	rednet.open(sm.get("modem_side"))
+
+    initialize()
 	
 	draw_ui()
 	while true do
@@ -32,8 +39,8 @@ function main()
 
 		if event == "redstone" then
 			if redstone.getInput(sm.get("redstone_hallsensor_side")) then
-				print("contraption arrived")
-				-- todo do stuff
+				print("x == 0")
+                x = 0;
 			end
 		end
 
@@ -43,6 +50,15 @@ function main()
 			parse_rednet_message(message_type,message_content)
         end
 	end	
+end
+
+function initialize()
+    stop_moving_along_x_axis()
+    rotate_backwards()
+    
+    if redstone.getInput("redstone_hallsensor_side") then
+        x = 0
+    end
 end
 
 function draw_ui()
@@ -85,6 +101,22 @@ function return_to_start()
     print("returning to start")
     move_to_y(0)
     move_to_x(0)
+end
+
+function rotate_forwards()
+    redstone.setOutput(sm.get("redstone_direction_side"),sm.get("redstone_direction_forwards_when"))
+end
+
+function rotate_backwards()
+    redstone.setOutput(sm.get("redstone_direction_side"),not sm.get("redstone_direction_forwards_when"))
+end
+
+function start_moving_along_x_axis()
+    redstone.setOutput(sm.get("redstone_lock_movement_side"),sm.get("redstone_lock_movement_active_when"))
+end
+
+function stop_moving_along_x_axis()
+    redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
 end
 
 function read_message(message)
