@@ -7,6 +7,7 @@ sm = newSettingsManager("settings.txt")
 sm.set("modem_side","right")
 sm.set("redstone_hallsensor_side","front")
 sm.set("redstone_lock_movement_side","top")
+sm.set("redstone_lock_movement_active_when",true)
 sm.set("controller_id",18)
 sm.load()
 
@@ -37,12 +38,28 @@ function parse_rednet_message(message_type,message_content)
         redstone.setOutput(sm.get("redstone_lock_movement_side", parse_bool(message_content)))      
     elseif message_type == "init" then
         rednet.send(sm.get("controller_id"),"init;hello")
+    elseif message_type == "movement" then
+        if message_content == "start" then
+            start_moving_along_axis()
+        else
+            stop_moving_along_axis()
+        end    
     end
 end
 
 function read_message(message)
     local split = split(message,";")
     return split[1], split[0]
+end
+
+function start_moving_along_axis()
+    print("starting to move")
+    redstone.setOutput(sm.get("redstone_lock_movement_side"),sm.get("redstone_lock_movement_active_when"))
+end
+
+function stop_moving_along_axis()
+    print("stop movement")
+    redstone.setOutput(sm.get("redstone_lock_movement_side"), not sm.get("redstone_lock_movement_active_when"))
 end
 
 function parse_bool(text)
