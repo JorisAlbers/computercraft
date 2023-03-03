@@ -84,6 +84,8 @@ function draw_ui()
     print("R = return to start position")
     print("y:<number> = move to y position <number>")
     print("x:<number> = move to x position <number>")
+    print("start = start mining")
+    print("stop  = stop  mining")
 end
 
 function parse_rednet_message(message_type,message_content, sender_id)
@@ -100,6 +102,10 @@ end
 function parse_console_message(message)
     if message == "r" or message == "R" then
         return_to_start()
+    elseif message == "start" then 
+        start_moving_along_z_axis()
+    elseif message == "stop" then
+        stop_moving_along_z_axis()
     else
         local split = split(message,":")
         if #split == 2 then
