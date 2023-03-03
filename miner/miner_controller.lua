@@ -22,8 +22,9 @@ function main()
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
         if event == "key_up" and keys.getName(a1) == "enter" then           
-            char_buffer = ""
             print()
+            parse_console_message(char_buffer)
+            char_buffer = ""
         end
         
         if event == "char" then
