@@ -79,3 +79,5 @@ function split(s, separator)
     string.gsub(s, pattern, function(c) fields[#fields + 1] = c end)
     return fields
 end
+
+main()
