@@ -96,7 +96,7 @@ function parse_rednet_message(message_type,message_content, sender_id)
         end
     elseif message_type == "pocket_init" then
         pocket_id = sender_id;
-        rednet.send(sm.get(pocket_id),"pocket_init;accepted")
+        rednet.send(pocket_id,"pocket_init;accepted")
     elseif message_type == "pocket_command" then
         parse_console_message(message_content)
     elseif message_type == "at_y" then
