@@ -7,6 +7,8 @@ sm = newSettingsManager("settings.txt")
 sm.set("server_id",18)
 sm.load()
 
+local char_buffer = ""
+
 function main()
 	print("Starting miner pocket control")	
     peripheral.find("modem", rednet.open)
@@ -53,6 +55,7 @@ function initialize()
 			parse_rednet_message(message_type,message_content, a1)
         end
     end
+    print("connected to server!")
 end
 
 function read_message(message)
