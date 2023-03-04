@@ -4,7 +4,7 @@ shell.run("pastebin","get","XcqAQVWu","settings_manager.lua")
 require "settings_manager"
 
 sm = newSettingsManager("settings.txt")
-sm.set("server_id",19)
+sm.set("server_id",18)
 
 function main()
 	print("Starting miner pocket control")	
