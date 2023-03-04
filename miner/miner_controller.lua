@@ -230,12 +230,12 @@ function stop_moving()
 end
 
 function log(message)
-    print(message)
-
     if not message then
+        print()
         return
     end
 
+    print(message)
     if pocket_id then
         rednet.send(pocket_id,"pocket_log;"..message)
     end
