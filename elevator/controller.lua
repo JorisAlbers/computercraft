@@ -6,7 +6,6 @@ require "settings_manager"
 
 settings_filepath = "settings.txt"
 sm = newSettingsManager(settings_filepath)
-sm.set("modem_side","back")
 sm.set("redstone_direction_side","right")
 sm.set("redstone_direction_down_when",false)
 sm.set("redstone_activation_side","bottom")
@@ -48,7 +47,7 @@ function main()
 	
 	initialize_elevator()
 	
-	rednet.open(sm.get("modem_side"))
+	peripheral.find("modem", rednet.open)
 	
 	
 	while (true) do 

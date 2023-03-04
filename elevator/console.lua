@@ -10,7 +10,6 @@ settings_filepath = "settings.txt"
 sm = newSettingsManager(settings_filepath)
 sm.set("level",0)
 sm.set("elevator_server_id",1)
-sm.set("modem_side","back")
 sm.set("redstone_sensor_side","left")
 sm.set("redstone_button_side","right")
 sm.load()
@@ -18,7 +17,7 @@ sm.load()
 function main()
 	print("starting elevator console")
 	term.clear()
-	rednet.open(sm.get("modem_side"))
+	peripheral.find("modem", rednet.open)
 	
 	draw_ui()
 	while true do
