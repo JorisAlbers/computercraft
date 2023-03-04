@@ -12,8 +12,6 @@ function main()
     peripheral.find("modem", rednet.open)
 
     initialize()
-    	
-	draw_ui()
 	while true do
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
