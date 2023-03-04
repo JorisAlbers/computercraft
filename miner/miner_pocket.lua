@@ -55,11 +55,6 @@ function initialize()
 			parse_rednet_message(message_type,message_content, a1)
         end
     end
-
-    
-    if redstone.getInput(sm.get("redstone_hallsensor_side")) then
-        x = 0
-    end
 end
 
 function read_message(message)
