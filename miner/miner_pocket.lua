@@ -39,7 +39,7 @@ function parse_rednet_message(message_type,message_content, sender_id)
         if sender_id == sm.get("server_id") then
             server_connected = true
         end
-    elseif message_type == "pocket_print" then
+    elseif message_type == "pocket_log" then
         print("server: "..message_content)
     end
 end
