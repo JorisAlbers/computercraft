@@ -5,6 +5,7 @@ require "settings_manager"
 
 sm = newSettingsManager("settings.txt")
 sm.set("server_id",18)
+sm.load()
 
 function main()
 	print("Starting miner pocket control")	
