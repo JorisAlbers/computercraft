@@ -12,8 +12,6 @@ sm.set("redstone_direction_forwards_when",false)
 sm.set("redstone_stop_movement_side","top")
 sm.set("redstone_stop_movement_active_when",false)
 sm.set("y_controller_id",19)
-
-
 sm.load()
 
 local y_controller_connected = false;
@@ -23,9 +21,11 @@ local x = 0
 local z = 0
 local isMovingForwards = true;
 
+local pocket_id = nil
+
 
 function main()
-	print("Starting miner controller for x axis")	
+	log("Starting miner controller for x axis")	
     peripheral.find("modem", rednet.open)
     initialize()
 	
@@ -34,7 +34,7 @@ function main()
 		local event, a1, a2, a3, a4, a5 = os.pullEvent()
 		
         if event == "key_up" and keys.getName(a1) == "enter" then           
-            print()
+            log()
             parse_console_message(char_buffer)
             char_buffer = ""
         elseif event == "char" then
@@ -44,33 +44,33 @@ function main()
 
 		if event == "redstone" then
 			if redstone.getInput(sm.get("redstone_hallsensor_side")) then
-				print("x == 0")
+				log("x == 0")
                 x = 0;
 			end
 		end
 
         if event == "rednet_message" then
 			local message_type, message_content = read_message(a2)
-			print("type: ".. message_type .. " content: " .. message_content)
+			log("type: ".. message_type .. " content: " .. message_content)
 			parse_rednet_message(message_type,message_content,a1)
         end
 	end	
 end
 
 function initialize()
-    print("initalizing")
+    log("initalizing")
     stop_moving()
     disallow_x_movement()
     disallow_y_movement()
     disallow_z_movement()
 
-    print("waiting till other controllers connect...")
+    log("waiting till other controllers connect...")
     while not y_controller_connected do        
         rednet.send(sm.get("y_controller_id"),"init;request")
         local event, a1, a2, a3, a4, a5 = os.pullEvent()
         if event == "rednet_message" then
 			local message_type, message_content = read_message(a2)
-			print("type: ".. message_type .. " content: " .. message_content)
+			log("type: ".. message_type .. " content: " .. message_content)
 			parse_rednet_message(message_type,message_content, a1)
         end
     end
@@ -82,11 +82,11 @@ function initialize()
 end
 
 function draw_ui()
-    print("R = return to start position")
-    print("y:<number> = move to y position <number>")
-    print("x:<number> = move to x position <number>")
-    print("start = start mining")
-    print("stop  = stop  mining")
+    log("R = return to start position")
+    log("y:<number> = move to y position <number>")
+    log("x:<number> = move to x position <number>")
+    log("start = start mining")
+    log("stop  = stop  mining")
 end
 
 function parse_rednet_message(message_type,message_content, sender_id)
@@ -94,6 +94,11 @@ function parse_rednet_message(message_type,message_content, sender_id)
         if sender_id == sm.get("y_controller_id") then
             y_controller_connected = true
         end
+    elseif message_type == "pocket_init" then
+        pocket_id = sender_id;
+        rednet.send(sm.get(pocket_id),"pocket_init;accepted")
+    elseif message_type == "pocket_command" then
+        parse_console_message(message_content)
     elseif message_type == "at_y" then
         y = math.floor(tonumber(message_content))
         -- todo do stuff
@@ -126,7 +131,7 @@ function parse_console_message(message)
 end
 
 function move_to_y(to_y)
-    print("moving to y: "..to_y)
+    log("moving to y: "..to_y)
     stop_moving()
     disallow_x_movement()
     allow_y_movement()
@@ -144,7 +149,7 @@ function move_to_y(to_y)
 end
 
 function move_to_x(to_x)
-    print("moving to x: "..to_x)
+    log("moving to x: "..to_x)
     stop_moving()
     disallow_y_movement()
     allow_x_movement()
@@ -178,7 +183,7 @@ function move_to_z(to_z)
 end
 
 function return_to_start()
-    print("returning to start")
+    log("returning to start")
     move_to_y(0)
     move_to_x(0)
 end
@@ -222,6 +227,18 @@ end
 
 function stop_moving()
     redstone.setOutput(sm.get("redstone_stop_movement_side"),  not sm.get("redstone_stop_movement_active_when"))
+end
+
+function log(message)
+    print(message)
+
+    if not message then
+        return
+    end
+
+    if pocket_id then
+        rednet.send(pocket_id,"pocket_log;"..message)
+    end
 end
 
 function read_message(message)
