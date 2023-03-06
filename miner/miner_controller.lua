@@ -1,6 +1,7 @@
 -- load libraries
+local git_url = "https://raw.githubusercontent.com/JorisAlbers/computercraft/main/settings.lua"
 shell.run("rm","settings_manager.lua")
-shell.run("pastebin","get","XcqAQVWu","settings_manager.lua")
+shell.run("wget",git_url,"settings_manager.lua")
 require "settings_manager"
 
 sm = newSettingsManager("settings.txt")
