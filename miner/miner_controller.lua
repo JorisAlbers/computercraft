@@ -121,7 +121,7 @@ function parse_console_message(message)
                 if number then                        
                     move_to_y(number)
                 end
-            elseif split[2] == "x" then
+            elseif split[1] == "x" then
                 local number = tonumber(split[2])
                 if number then                        
                     move_to_x(number)
