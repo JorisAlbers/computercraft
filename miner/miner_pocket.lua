@@ -1,5 +1,7 @@
+-- script to run pocket computer to connect to the main controller
 -- load libraries
-local git_url = "https://raw.githubusercontent.com/JorisAlbers/computercraft/main/download_pastebin_on_startup.lua"
+
+local git_url = "https://raw.githubusercontent.com/JorisAlbers/computercraft/main/settings.lua"
 shell.run("rm","settings_manager.lua")
 shell.run("wget",git_url,"settings_manager.lua")
 require "settings_manager"
