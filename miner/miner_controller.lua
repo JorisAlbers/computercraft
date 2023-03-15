@@ -103,6 +103,12 @@ function parse_rednet_message(message_type,message_content, sender_id)
     elseif message_type == "at_y" then
         y = math.floor(tonumber(message_content))
         -- todo do stuff
+    elseif message_type == "at_z" then
+        z = math.floor(tonumber(message_content))
+        -- todo do stuff
+    elseif message_type == "z_heartbeat" then
+        local z_alive_for = math.floor(tonumber(message_content))
+        log("z has been alive for seconds: "..z_alive_for)
     end
 end
 

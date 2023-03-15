@@ -2,6 +2,10 @@
 -- this controller will restart often.
 -- only load new settings manager when no lib exists yet
 
+local z = -1
+local heartbeat_timer = nil
+local heartbeat_timespan = 20
+
 function main()
     local settings_lib = "settings_manager.lua"
     if not file_exists(settings_lib) then
@@ -9,13 +13,37 @@ function main()
     end
     require "settings_manager" 
     init_settings()
+    send_heartbeat(0)
+    start_heartbeat(heartbeat_timespan)
 
-    send_alive_message()
+    while true do
+		local event, a1, a2, a3, a4, a5 = os.pullEvent()
+
+		if event == "redstone" then
+			if redstone.getInput(sm.get("redstone_hallsensor_side")) then
+				log("z == 0")
+                rednet.send(sm.get("controller_id"),"at_z;0")
+			end
+		end
+
+        if event == "rednet_message" then
+			local message_type, message_content = read_message(a2)
+			log("type: ".. message_type .. " content: " .. message_content)
+			parse_rednet_message(message_type,message_content,a1)
+        elseif event == "timer" then
+            if a1 == heartbeat_timer then
+                send_heartbeat(heartbeat_timespan)
+            end
+        end	
+    end
 end
 
+function start_heartbeat(seconds)
+    heartbeat_timer = os.startTimer(seconds)
+end
 
-function send_alive_message()
-    rednet.send(sm.get("controller_id"),"alive;true")
+function send_heartbeat(seconds)
+    rednet.send(sm.get("controller_id"),"z_heartbeat;"..seconds)
 end
 
 function download_settings_lib()
