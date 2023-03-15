@@ -142,6 +142,12 @@ function move_to_y(to_y)
     stop_moving()
     disallow_x_movement()
     allow_y_movement()
+
+    if y == to_y then
+        log("already at y: "..y)
+        return
+    end
+    
     if y > to_y then
         -- we need to go down
         rotate_backwards()
@@ -160,6 +166,12 @@ function move_to_x(to_x)
     stop_moving()
     disallow_y_movement()
     allow_x_movement()
+
+    if x == to_x then
+        log("already at x: "..x)
+        return
+    end
+
     if x > to_x then
         -- we need to go down
         rotate_forwards()
@@ -176,6 +188,11 @@ end
 function move_to_z(to_z)
     stop_moving()
     allow_z_movement()
+
+    if z == to_z then
+        log("already at z: "..x)
+        return
+    end
 
     if z > to_z then
         -- we need to go down
