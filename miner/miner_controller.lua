@@ -155,17 +155,17 @@ function move_to_y(to_y)
     -- todo: keep track of y
 end
 
-function move_to_x(to_x)
+function move_to_x(to_x)    
     log("moving to x: "..to_x)
     stop_moving()
     disallow_y_movement()
     allow_x_movement()
     if x > to_x then
         -- we need to go down
-        rotate_backwards()
-    else
-        -- we need to go up
         rotate_forwards()
+    else
+        -- we need to go up        
+        rotate_backwards()
     end
 
     start_moving()
