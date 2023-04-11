@@ -60,5 +60,5 @@ function initialize()
     startup_timer_id = os.startTimer(2)
 end
 
-
+main()
 
