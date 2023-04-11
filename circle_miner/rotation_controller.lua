@@ -17,7 +17,7 @@ local startup_timer_id;
 local should_stop_arm = false;
 
 function main()
-	log("Starting rotational controller")	
+	print("Starting rotational controller")	
     peripheral.find("modem", rednet.open)
     initialize()
 
