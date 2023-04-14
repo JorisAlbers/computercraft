@@ -14,7 +14,6 @@ sm.load()
 
 local arm_at_startposition = false;
 local startup_timer_id;
-local stop_arm_after_seconds_timer_id;
 local should_stop_arm = false;
 
 
@@ -30,15 +29,15 @@ function main()
             if not arm_at_startposition and redstone.getInput(sm.get("rhs_arm")) then
                 -- switched from false to true
                 print("The arm is now at the start position")
-                arm_at_startposition = true;
-                if should_stop_arm then
-                    stop_arm_after_seconds(2)
-                    
-                end
-
+                arm_at_startposition = true;            
             elseif arm_at_startposition and not redstone.getInput(sm.get("rhs_arm")) then
                 -- switched from true to false
                 print("The arm is no longer at the start position")
+                if  should_stop_arm then
+                    print("Stopping the arm")
+                    redstone.setOutput(sm.get("redstone_lock_movement_side"),sm.get("redstone_lock_movement_active_when"));
+                end
+
                 arm_at_startposition = false;
             end
         end        
@@ -54,22 +53,13 @@ function main()
                 -- stop the arm when it returns
                 print("2 seconds passed. Stopping arm when needed")
                 should_stop_arm = true;
-            end
-            if a1 == stop_arm_after_seconds_timer_id then
-                -- stop the arm. 
-                print("2 seconds passed. Stopping arm now.")
-                redstone.setOutput(sm.get("redstone_lock_movement_side"),sm.get("redstone_lock_movement_active_when"));
-            end
+            end           
         end	
     end
 end
 
 function initialize()
     startup_timer_id = os.startTimer(2)
-end
-
-function stop_arm_after_seconds(seconds)
-    stop_arm_after_seconds_timer_id = os.startTimer(seconds)
 end
 
 main()
